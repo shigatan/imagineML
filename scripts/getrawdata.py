@@ -1,19 +1,10 @@
 """Return raw data."""
-#http://www.coderholic.com/parsing-csv-data-in-python/
 import csv
 
 RAWDATA = []
-with open("C:\\Users\\User\\Documents\\imagineML\\data\\parsed.csv", encoding="utf8") as csvfile:
-    READER = csv.DictReader(csvfile)
-    for idx, line in enumerate(READER):
-        if idx < 20:
-            z = (idx)
-            print(idx)
-            for column in line:
-                print(column)
-            print("-------")
-            RAWDATA.append(z)   
-
-
-
-    
+F = open("C:\\Users\\User\\Documents\\imagineML\\data\\parsed.csv", encoding="utf8")
+CSV_F = csv.reader(F)
+for idx, line in enumerate(CSV_F):
+    z = (idx, line[0], line[1], line[2], line[3])
+    RAWDATA.append(z)
+print(len(RAWDATA))
