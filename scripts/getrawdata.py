@@ -1,6 +1,7 @@
 """Return raw data."""
 import csv
 import datetime
+from itertools import groupby
 
 DATE_FORMAT = "%d.%m.%Y" #11.07.2014
 
@@ -28,8 +29,14 @@ PARSEDDATA = []
 for line in RAWDATA:
     dt = datetime.datetime.strptime(line[1], DATE_FORMAT).date()
     itemId = UNIQUE_NAMES_DICT[line[2]]
-    row = (line[0], dt,  itemId, float(line[3]), float(line[4]))
+    #row = (line[0], dt,  itemId, float(line[3]), float(line[4]))
+    row = (line[0], dt,  itemId, line[3], line[4])
     PARSEDDATA.append(row)
-    if (line[0] < 5):
-        print(row)
 
+KEY_NAME = lambda x: x[2]
+SORTED_DATA = sorted(PARSEDDATA, key=KEY_NAME)
+RESULT = []
+for key, group in groupby(SORTED_DATA, key=KEY_NAME):
+    RESULT.append(dict(type=key, items=list(group)))
+
+print(len(RESULT))
