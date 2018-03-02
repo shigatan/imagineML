@@ -5,24 +5,24 @@ CSV file contains:
 - sales data rows. Each row is a line in format *date;id;name;price;sales;income;balance*
 - separator ';'
 ## Getting Started
-The app can be run with set of params:
-*<path_to_xml_file_folder>* - path to local folder with xml files 
-*<path_to_csv_file_folder>* - path to local folder where new csv files will be stored 
-*<date>* - date in format "yyyymmdd". The app will convert xml files with the same date only
-*<shop>* - shop name. The app will convert xml files for this shop only.
+The app can be run with set of params:  
+*<path_to_xml_file_folder>* - path to local folder with xml files  
+*<path_to_csv_file_folder>* - path to local folder where new csv files will be stored  
+*<_date_>* - date in format "yyyymmdd". The app will convert xml files with the same date only  
+*<_shop_>* - shop name. The app will convert xml files for this shop only  
 ## Run 
 ```
 // convert all xml files
 XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>"
 
 // convert xml files with specified date
-XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "<yyyymmdd>"
+XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "<_date_>"
 
 // convert xml files for one shop
-XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "" "<shop>"
+XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "" "<_shop_>"
 
 // convert xml files for one shop and one day
-XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "<date>" "<shop>"
+XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "<_date_>" "<_shop_>"
 ```
 ## Todo
 - in result it should be service which every day downloads new appeared xml files to csv file storage
