@@ -25,6 +25,6 @@ XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" ""
 XmlToCsvConverter.exe "<path_to_xml_file_folder>" "<path_to_csv_file_folder>" "<_date_>" "<_shop_>"
 ```
 ## Todo
-- in result it should be service which every day downloads new appeared xml files, converts them to csv file and loads csv files to csv storage
+- in result it should be cross-platform service which every day downloads new appeared xml files, converts them to csv file and loads csv files to csv storage
 - add setting: limited by csv file size/1 xml => 1 csv/all xml => 1 csv. Now it works as 1 xml(>21000Kb) to 1 csv(~330Kb)
 
