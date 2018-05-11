@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace XmlToCsvConverter
 {
     internal class XmlToCsvConverter
     {
-        private const string columns = "date;id;name;price;sales;income;balance";
+        private const string columns = "date;id1;id2;name;price;sales;income;balance;file";
 
         internal static void Run(ConvertParams @params, IXmlFileProvider xmlFileProvider)
         {
@@ -20,11 +18,22 @@ namespace XmlToCsvConverter
                 Console.WriteLine("Files are not found.");
                 return;
             }
-            
-            foreach(var xmlFile in xmlFiles)
+            Console.WriteLine($"Found: {xmlFiles.Count()}");
+            Console.ReadLine();
+            long errorCount = 0, total = 0;
+            foreach (var xmlFile in xmlFiles)
             {
-                ConvertXmlToCsv(xmlFile, @params.DestinationDir); 
+                try
+                {
+                    total += ConvertXmlToCsv(xmlFile, @params.DestinationDir);
+                }
+                catch (Exception ex)
+                {
+                    errorCount++;
+                    Console.WriteLine(ex);
+                }
             }
+            Console.WriteLine($"Handles {total} items, errors {errorCount}");
         }
 
         private static string BuildCSVFileName(string xmlFile, string destination)
@@ -42,43 +51,56 @@ namespace XmlToCsvConverter
             return Path.Combine(destination, $"{filename}.csv");
         }
 
-        private static void ConvertXmlToCsv(string xmlFile, string destination)
+        private static int ConvertXmlToCsv(string xmlFile, string destination)
         {
-            try
+            string onlyFileName = Path.GetFileName(xmlFile);
+            Console.WriteLine("Reading file: {0}", xmlFile);
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(xmlFile);
+
+            StringBuilder csvContent = new StringBuilder();
+            csvContent.AppendLine(columns);
+
+            int total = 0;
+            foreach (XmlNode tovari in xmlDoc.DocumentElement.ChildNodes) // Данные -> Товары -> список nodes with name Товар
             {
-                Console.WriteLine("Reading file: {0}", xmlFile);
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(xmlFile);
-
-                StringBuilder csvContent = new StringBuilder();
-                csvContent.AppendLine(columns);
-
-                foreach (XmlNode tovari in xmlDoc.DocumentElement.ChildNodes) // Данные -> Товары -> список nodes with name Товар
+                var dt = tovari.Attributes["Дата"].Value;
+                foreach (XmlNode tovar in tovari.ChildNodes)
                 {
-                    var dt = tovari.Attributes["Дата"].Value;
-                    foreach(XmlNode tovar in tovari.ChildNodes)
+                    try
                     {
                         var name = tovar["НаименованиеРабочее"].InnerText;
-                        var id = name.GetHashCode();
+                        string id1 = string.Empty;
+                        try
+                        {
+                            id1 = tovar["Код"].InnerText;
+                        }
+                        catch
+                        {
+                            //
+                        }
+                        var id2 = name.GetHashCode();
                         var salesNode = tovar["РозничныеПродажи"];
                         var sales = salesNode.ChildNodes[0].InnerText; // Количество
                         var price = salesNode.ChildNodes[1].InnerText; // Цена
                         var income = tovar["Поступление"].ChildNodes[0].InnerText; // Количество
                         var balance = tovar["Остаток"].InnerText; // Количество
 
-                        var csvRow = $"{dt};{id};{name};{price};{sales};{income};{balance}";
+                        var csvRow = $"{dt};{id1};{id2};{name};{price};{sales};{income};{balance};{onlyFileName}";
                         csvContent.AppendLine(csvRow);
-                        Console.WriteLine(csvRow);                        
-                    }                    
+                        //Console.WriteLine(csvRow);
+                        total++;
+                    }
+                    catch
+                    {
+                        // 
+                    }
                 }
-                var csvFilePath = BuildCSVFileName(xmlFile, destination);
-                File.WriteAllText(csvFilePath, csvContent.ToString());
-                Console.WriteLine($"CSV file is ready: {csvFilePath}");
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            var csvFilePath = BuildCSVFileName(xmlFile, destination);
+            File.WriteAllText(csvFilePath, csvContent.ToString());
+            Console.WriteLine($"CSV file is ready: {csvFilePath}");
+            return total;
         }
     }
 }
