@@ -8,7 +8,7 @@ namespace XmlToCsvConverter
 {
     internal class XmlToCsvConverter
     {
-        private const string columns = "date;id1;id2;name;price;sales;income;balance;file";
+        private const string columns = "date\tid1\tid2\tname\tprice\tsales\tincome\tbalance";
 
         internal static void Run(ConvertParams @params, IXmlFileProvider xmlFileProvider)
         {
@@ -86,7 +86,7 @@ namespace XmlToCsvConverter
                         var income = tovar["Поступление"].ChildNodes[0].InnerText; // Количество
                         var balance = tovar["Остаток"].InnerText; // Количество
 
-                        var csvRow = $"{dt};{id1};{id2};{name};{price};{sales};{income};{balance};{onlyFileName}";
+                        var csvRow = $"{dt}\t{id1}\t{id2}\t{name}\t{price}\t{sales}\t{income}\t{balance}";
                         csvContent.AppendLine(csvRow);
                         //Console.WriteLine(csvRow);
                         total++;

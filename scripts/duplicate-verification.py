@@ -1,7 +1,7 @@
 import csv
 import hashlib
 
-target_file = "C:\\Users\\User\\Documents\\repositories\\imagineML\\data\\data_2018-01-20\\result_v2.csv"
+target_file = "C:\\Users\\User\\Documents\\repositories\\imagineML\\azure-ml\\input\\input20180605.csv"
 hash_dict = {}
 lines = 1
 for line in open(target_file, "r", encoding="utf8"):

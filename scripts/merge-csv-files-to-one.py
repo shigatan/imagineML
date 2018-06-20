@@ -4,12 +4,12 @@ import os
 import glob
 import csv
 
-path = "C:\\Users\\User\\Documents\\repositories\\imagineML\\data\\data_2018-01-20\\csv"
+path = "C:\\Users\\User\\Documents\\repositories\\imagineML\\data\\data_2018-01-20\\csv-input"
 extension = 'csv'
 os.chdir(path)
 csvFiles = [i for i in glob.glob('*.{}'.format(extension))]
 
-fout = open("C:\\Users\\User\\Documents\\repositories\\imagineML\\data\\data_2018-01-20\\result.csv", "a", encoding="utf8")
+fout = open("C:\\Users\\User\\Documents\\repositories\\imagineML\\azure-ml\\input\\input20180605.csv", "a", encoding="utf8")
 # todo: delete if result file exists
 
 # first file:
